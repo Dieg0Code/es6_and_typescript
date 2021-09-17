@@ -46,3 +46,60 @@ let message = "Hello World!";
 console.log(message);
 ```
 
+```javascript
+if (1 === 3) {
+    var message = "Hello World!";
+}
+
+console.log(message);
+```
+
+Si ejecuto esto aparece `undefined`, pero ¿por qué?, si esta declarada antes de ser imprimida. Esto ocurre porque cuando el interprete recorre el archivo encuentra que la definicion de la variable está dentro del `if`, es decir su `scope` es el `if`, a pesar de que este no sea una función literal, se sigue considerando un `scope` independiente.
+
+Si cambiamos `var` por `let`:
+
+```javascript
+if (1 === 3) {
+    let message = "Hello World!";
+}
+
+console.log(message);
+```
+
+Obtenemos `Uncaught ReferenceError: message is not defined`.
+
+Lo que hace el operador `let` es crear esa variable solamente dentro del `scope` en el que está definida, es decir, dentro del `if` en este caso. Cuando se termina de ejecutar el `if` se destruye la variable, es por eso que al tratar de imprimir la variable `message` retorna un error, porque ya no existe en el `scope` en el que está el `console.log`.
+
+Incluso si el `if` resuelve en `true`, seguiria devolviendo error.
+
+```javascript
+if (1 === 1) {
+    let message = "Hello World!";
+}
+
+console.log(message); // Uncaught ReferenceError: message is not defined
+```
+
+¿Que pasa si lo hacemos de la siguiente manera?
+
+```javascript
+let message = "123";
+
+if (1 === 1) {
+    message = "Hello World!";
+}
+
+console.log(message); // Hello World!
+```
+
+```javascript
+let message = "123";
+
+if (1 === 2) {
+    message = "Hello World!";
+}
+
+console.log(message); // 123
+```
+
+Recordar que la declaracion de una variable con `let` nos permite definir el ciclo de vida de esta, ademas de que nos obliga a declararla antes de usarla.
